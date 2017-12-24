@@ -93,7 +93,7 @@ $ ./gradlew -b build.gradle.cargo cargoStartLocal
 * Change Serilaization from List<Object> to Jackson Genric TypeReference<Object>
 
 * Your comments and suggestions will be greatly appreciated. :blush:
-* 
+
 ## References
 
 - https://github.com/foo4u/keycloak-spring-demo
