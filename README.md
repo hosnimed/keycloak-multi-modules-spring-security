@@ -1,4 +1,4 @@
-# Keycloak Spring Security Multi Module Demo
+# Keycloak Spring Security Multi Modules Demo
 
 Demonstrates how to use the Keycloak Spring Security adapter, including:
 
@@ -88,7 +88,7 @@ $ ./gradlew -b build.gradle.cargo cargoStartLocal
 ```
 
 ## TODO
-    - Change the Jackson explicit ObjectMapper (From/TO Json files) to  Jackson ObjectMapper throught a custom <b>MappingJackson2HttpMessageConverter</b> 
+    - Change the Jackson explicit ObjectMapper (From/TO Json files) to  Jackson *ObjectMapper* throught a custom **MappingJackson2HttpMessageConverter** 
     - Change Serilaization from List<Object> to Jackson Genric TypeReference<Object>
 
 ## References
