@@ -1,0 +1,48 @@
+server:
+  port: 9093
+  contextPath: /product-app
+
+database:
+  service:
+    url: http://localhost:9091/database-service/products
+
+customer:
+  service:
+    url: http://localhost:9092/customer-app/
+
+product:
+  service:
+    url: http://localhost:9093/product-app/
+
+spring:
+  freemarker:
+    cache: false
+
+keycloak:
+  enabled: true
+  realm: spring-demo
+  realm-key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCh65Gqi3BSaVe12JHlqChWm8WscICrj46MVqmRoO9FCmqbxEpCQhE1RLjW+GDyc3YdXW3xqUQ3AZxDkTmN1h6BWkhdxPLzA4EnwgWmGurhyJlUF9Id2tKns0jbC+Z7kIb2LcOiKHKL7mRb3q7EtWubNnrvunv8fx+WeXGaQoGEVQIDAQAB
+  auth-server-url: http://localhost:8080/auth
+  ssl-required: external
+  resource: product-portal
+  principal-attribute: preferred_username
+  #  If set to true, the adapter will look inside the token for application level role mappings for the user.
+  #  If false, it will look at the realm level for user role mappings. This is OPTIONAL. The default value is false
+  use-resource-role-mappings: true
+  credentials:
+    secret: a9c3501e-20dd-4277-8a7b-351063848446
+
+#logging configuration
+security:
+  user:
+    password: password
+logging:
+  level:
+    org.springframework.web: trace
+    org.springframework.security: trace
+    com.keycloak.example: trace
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file: ./build/debug.log
+debug: true
