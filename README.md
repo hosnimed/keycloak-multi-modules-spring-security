@@ -88,12 +88,13 @@ $ ./gradlew -b build.gradle.cargo cargoStartLocal
 ```
 
 ## TODO
-    - Change the Jackson explicit ObjectMapper (From/TO Json files) to  Jackson *ObjectMapper* throught a custom **MappingJackson2HttpMessageConverter** 
-    - Change Serilaization from List<Object> to Jackson Genric TypeReference<Object>
+* Change the Jackson explicit ObjectMapper (From/TO Json files) to  Jackson *ObjectMapper* throught a custom **MappingJackson2HttpMessageConverter** 
+
+* Change Serilaization from List<Object> to Jackson Genric TypeReference<Object>
 
 ## References
 
-https://github.com/foo4u/keycloak-spring-demo
-https://github.com/Smartling/smartling-keycloak-extras
-http://www.keycloak.org/docs/latest/securing_apps/index.html
+- https://github.com/foo4u/keycloak-spring-demo
+- https://github.com/Smartling/smartling-keycloak-extras
+- http://www.keycloak.org/docs/latest/securing_apps/index.html
 
