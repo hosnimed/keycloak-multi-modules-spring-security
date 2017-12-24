@@ -1,0 +1,123 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.3.0.RELEASE"
+        classpath "io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE"
+        classpath 'io.spring.gradle:propdeps-plugin:0.0.9.RELEASE'
+        /*Gradle plugin that provides deployment capabilities to local and remote containers via Cargo*/
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.2.3'
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '1.5.9.RELEASE'
+}
+
+configure(allprojects) {
+    apply plugin: 'propdeps'
+    apply plugin: 'propdeps-maven'
+    apply plugin: 'propdeps-idea'
+}
+
+ext {
+    keycloakVersion = '3.4.1.Final'
+    resteasyVersion = '3.0.10.Final'
+    springVersion = '4.1.6.RELEASE'
+    springBootVersion = '1.5.8.RELEASE'
+    springSecurityVersion = '4.2.3.RELEASE'
+}
+
+
+
+bootRepackage {
+    enabled = false
+}
+
+subprojects {
+    group = 'org.keycloak.springsecurity.demo'
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+    apply plugin: "java"
+    apply plugin: 'war'
+    apply plugin: 'com.bmuschko.cargo'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://repo.spring.io/libs-snapshot' }
+    }
+
+    dependencies {
+        compile("org.slf4j:slf4j-api")
+        compile("net.rossillo.mvc.cache:spring-mvc-cache-control:1.1.0-RELEASE")
+
+        compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+        compile("org.springframework.security:spring-security-web:${springSecurityVersion}")
+        compile("org.springframework.security:spring-security-config:${springSecurityVersion}")
+        compile("org.keycloak:keycloak-spring-security-adapter:${keycloakVersion}")
+        compile("org.keycloak:keycloak-spring-boot-starter:${keycloakVersion}")
+        compile("org.keycloak.bom:keycloak-adapter-bom:${keycloakVersion}")
+
+        testCompile "org.springframework.boot:spring-boot-starter-test"
+
+        providedRuntime "org.springframework.boot:spring-boot-starter-tomcat:${springBootVersion}"
+        provided("javax.servlet:javax.servlet-api:3.0.1")
+    }
+
+    configurations {
+        provided
+        compile.exclude module: "spring-boot-starter-tomcat"
+        /*automatically assemble my project's artifact when executing a Cargo deployment task*/
+
+        cargoStartLocal.dependsOn assemble
+
+    }
+
+    cargo {
+        containerId = 'tomcat8x'
+        port = 8888
+
+        remote {
+            hostname = '127.0.0.1'
+            username = 'tomcat'
+            password = 'tomcat'
+        }
+
+        local {
+            homeDir = file('C:\\apache-tomcat-8.5.24\\')
+            configHomeDir = file('C:\\apache-tomcat-8.5.24\\conf.cargo')
+            outputFile = file('C:\\apache-tomcat-8.5.24\\conf.cargo\\logs\\output.log')
+            timeout = 60000
+
+
+            containerProperties {
+                property 'cargo.tomcat.ajp.port', 8009
+                property 'cargo.rmi.port', 8300
+
+                property 'cargo.servlet.users', 'admin:admin:manager-script,manager-gui'
+
+
+            }
+        }
+    }
+}
+
+project('customer-app') {
+    dependencies {
+        compile "org.springframework.boot:spring-boot-starter-freemarker:${springBootVersion}"
+        compile "org.springframework:spring-web:${springVersion}"
+        compile "org.springframework:spring-webmvc:${springVersion}"
+    }
+}
+
+project('product-app') {
+    dependencies {
+        compile "org.springframework.boot:spring-boot-starter-freemarker:${springBootVersion}"
+    }
+}

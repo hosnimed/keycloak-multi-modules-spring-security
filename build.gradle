@@ -1,0 +1,83 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE"
+        classpath "io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE"
+        classpath 'io.spring.gradle:propdeps-plugin:0.0.9.RELEASE'
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '1.5.9.RELEASE'
+}
+
+configure(allprojects) {
+    apply plugin: 'propdeps'
+    apply plugin: 'propdeps-maven'
+    apply plugin: 'propdeps-idea'
+}
+
+ext {
+    keycloakVersion = '3.4.1.Final'
+    resteasyVersion = '3.0.10.Final'
+    springVersion = '4.3.1.RELEASE'
+    springBootVersion = '1.5.8.RELEASE'
+    springSecurityVersion = '4.1.1.RELEASE'
+}
+
+bootRepackage {
+    enabled = false
+}
+
+subprojects {
+    group = 'org.keycloak.springsecurity.demo'
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: 'idea'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://repo.spring.io/libs-snapshot' }
+    }
+
+    dependencies {
+        compile("org.slf4j:slf4j-api")
+        compile("net.rossillo.mvc.cache:spring-mvc-cache-control:1.1.0-RELEASE")
+
+        compile("org.springframework.boot:spring-boot-starter-tomcat:${springBootVersion}")
+        compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+        compile("org.springframework.security:spring-security-web:${springSecurityVersion}")
+        compile("org.springframework.security:spring-security-config:${springSecurityVersion}")
+        compile("org.keycloak:keycloak-spring-security-adapter:${keycloakVersion}")
+        compile("org.keycloak:keycloak-spring-boot-starter:${keycloakVersion}")
+        compile("org.keycloak.bom:keycloak-adapter-bom:${keycloakVersion}")
+
+        testCompile "org.springframework.boot:spring-boot-starter-test"
+
+    }
+
+}
+
+project('customer-app') {
+    dependencies {
+        compile "org.springframework.boot:spring-boot-starter-freemarker:${springBootVersion}"
+        compile "org.springframework:spring-web:${springVersion}"
+        compile "org.springframework:spring-webmvc:${springVersion}"
+    }
+}
+
+project('product-app') {
+    dependencies {
+        compile "org.springframework.boot:spring-boot-starter-freemarker:${springBootVersion}"
+    }
+}
