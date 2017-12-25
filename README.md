@@ -11,7 +11,7 @@ Demonstrates how to use the Keycloak Spring Security adapter, including:
 
 The following examples are standalone Spring Boot applications.
 
-They require the Keycloak 4.3.1, running locally on port 8080 (the default for the standalone appliance).
+They require the Keycloak 3.4.1.Final, running locally on port 8080 (the default for the standalone appliance).
 
 There are multiple Spring Boot projects.
 These will all run on independently on the localhost listening on differnt ports.
@@ -88,7 +88,7 @@ $ ./gradlew -b build.gradle.cargo cargoStartLocal
 ```
 
 ## TODO
-* Change the Jackson explicit ObjectMapper (From/TO Json files) to  Jackson *ObjectMapper* throught a custom **MappingJackson2HttpMessageConverter** 
+* Change the Jackson explicit ObjectMapper (From/To Json files) to  Jackson *ObjectMapper* throught a custom **MappingJackson2HttpMessageConverter** 
 
 * Change Serilaization from List<Object> to Jackson Genric TypeReference<Object>
 
